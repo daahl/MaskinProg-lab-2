@@ -23,7 +23,7 @@ __asm__ volatile(".L1: B .L1\n");				/* never return */
 #define GPIO_D_PUPDR	((volatile unsigned short*)	(GPIO_D+0x0E))	// Pull-up/pull-down config
 
 /* ---- Global variables ---- */
-unsigned char KEYLIST[16] = {1, 2, 3, 0xA, 4, 5, 6, 0xB, 7, 8, 9, 0xC, 0xE, 0, 0xF, 0xD};						 // Keypad key values
+unsigned char KEYLIST[16] = {1, 2, 3, 0xA, 4, 5, 6, 0xB, 7, 8, 9, 0xC, 0xE, 0, 0xF, 0xD};					   // Keypad key values
 unsigned char HEXLIST[16] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x67,0x77,0x7C,0x39,0x5E,0x79,0x71}; // Segment values for 0-F (hex)
 
 /* ---- Init ---- */
@@ -39,7 +39,7 @@ void appInit(void)
 /*
  * Returns a segment code based on the given key value.
  */
-unsigned char kvToHex(unsigned char kv)
+unsigned char out7seg(unsigned char kv)
 {
 	return HEXLIST[kv];
 }
@@ -74,7 +74,7 @@ unsigned char kbGetCol(void){
  * 	read each column,
  * 	return the key value.
  */
-unsigned char kbGetKey(void){
+unsigned char keyB(void){
 	unsigned char keyValue = 0xFF; // Default value if no key is pressed
 	
 		for(unsigned char row = 1; row <= 4; row++){
@@ -91,14 +91,13 @@ unsigned char kbGetKey(void){
 }
 
 /* ---- Main ---- */
-
 void main(void)
 {
 	unsigned char dispValue;
 	appInit();
 	while(1){
-		dispValue = kvToHex(kbGetKey());	// Read keypad D8-15
-		*GPIO_D_ODR_LOW = dispValue;		// Update display D0-7
+		dispValue = out7seg(keyB());	// Read keypad D8-15
+		*GPIO_D_ODR_LOW = dispValue;	// Update display D0-7
 	}
 }
 
