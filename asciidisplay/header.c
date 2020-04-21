@@ -1,5 +1,5 @@
 #include "header.h"
-/* ---- Helper functions ---- */
+
 void delay_250ns(void){
 	*STK_CTRL = 0;			// Reset SysTick
 	*STK_LOAD = 0x00000029; // Set load value, 42 Hz = 250 ns, 42 (dec) = 29 (hex)
@@ -145,10 +145,11 @@ void ascii_write_char(char c){
 void ascii_gotoxy(int x, int y){
 	unsigned char offset;
 	
-	offset = 0x40 * (y - 1) + (x - 1);
-	ascii_command(0x80 | offset);
+	offset = 0x40 * (y - 1) + (x - 1); // Does not behave well for x > 10, y > 2
+	ascii_command(0x80 | offset); // offset: 0x0 - 0x3F is on the first row, 0x40 - 0x7F is on the second row
 }
 
+// super duper important. do not remove!
 void test(void){
 	char f = 0;
 }

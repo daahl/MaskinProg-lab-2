@@ -13,13 +13,21 @@ __asm__ volatile(" BL main\n");					/* call main */
 __asm__ volatile(".L1: B .L1\n");				/* never return */
 }
 
-/* ---- Main ---- */
+
 void main(void){
 	ascii_init();
-	ascii_write_char('f');
-	ascii_gotoxy(1,2);
-	ascii_write_char('f');
-	ascii_gotoxy(2,1);
-	ascii_write_char('g');
+	
+	char *s;
+	char test1[] = "Alfanumerisk";
+	char test2[] = "Display - test";
+	
+	ascii_gotoxy(1,1); // Write to first row
+	s = test1;
+	while(*s)
+		ascii_write_char(*s++);
+		
+	ascii_gotoxy(1,2); // Write to second row
+	s = test2;
+	while(*s)
+		ascii_write_char(*s++);
 }
-
