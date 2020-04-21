@@ -21,6 +21,8 @@ __asm__ volatile(".L1: B .L1\n");				/* never return */
 #define STK_LOAD	 ((volatile unsigned int*) (STK + 4))	// Start value
 #define STK_VAL		 ((volatile unsigned int*) (STK + 8))	// Current value
 
+#define SIMULATOR
+
 /* ---- Global variables ---- */
 
 /* ---- Helper functions ---- */
@@ -37,23 +39,27 @@ void delay_250ns(void){
 }
 
 void delay_micro(unsigned int us){
+	#ifdef SIMULATOR
+		us = us/1000;
+		us++;
+	#else
 	for(unsigned int i = 0; i <= us; i++){
 		delay_250ns();
 		delay_250ns();
 		delay_250ns();
 		delay_250ns();
 	}
+	#endif
 }
 
 void delay_milli(unsigned int ms){
 	#ifdef SIMULATOR
 		ms = ms/1000;
 		ms++;
-	#endif
-	
+	#else
 	for(unsigned int i = 0; i < ms; i++)
 		delay_micro(1000);
-		
+	#endif
 }
 
 /* ---- Init ---- */
@@ -69,9 +75,9 @@ void main(void){
 	
 	while(1){
 		*Bargraph = 0;
-		delay_milli(2);
+		delay_milli(500);
 		*Bargraph = 0xFF;
-		delay_milli(2);
+		delay_milli(500);
 	}
 }
 

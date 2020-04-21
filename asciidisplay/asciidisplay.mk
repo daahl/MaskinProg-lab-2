@@ -3,10 +3,10 @@
 ## any manual changes will be erased      
 ##
 ## Debug
-ProjectName            :=delay
+ProjectName            :=asciidisplay
 ConfigurationName      :=Debug
 WorkspacePath          :=C:/Users/Marcus/Documents/myWorkspace
-ProjectPath            :=C:/Users/Marcus/Documents/myWorkspace/delay
+ProjectPath            :=C:/Users/Marcus/Documents/myWorkspace/asciidisplay
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
@@ -32,7 +32,7 @@ Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
-ObjectsFileList        :="delay.txt"
+ObjectsFileList        :="asciidisplay.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=makedir
 RcCmpOptions           := 
@@ -68,7 +68,7 @@ ARM_M4SFPLIB:=$(CodeLiteDir)/tools/gcc-arm/arm-none-eabi/lib/thumb/v7e-m+fp/soft
 ARM_GCC_M4SFPLIB:=$(CodeLiteDir)/tools/gcc-arm/lib/gcc/arm-none-eabi/9.2.1/thumb/v7e-m+fp/softfp
 ARM_M4HFPLIB:=$(CodeLiteDir)/tools/gcc-arm/arm-none-eabi/lib/thumb/v7e-m+fp/hard
 ARM_GCC_M4HFPLIB:=$(CodeLiteDir)/tools/gcc-arm/lib/gcc/arm-none-eabi/9.2.1/thumb/v7e-m+fp/hard
-Objects0=$(IntermediateDirectory)/startup.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/header.c$(ObjectSuffix) $(IntermediateDirectory)/startup.c$(ObjectSuffix) 
 
 
 
@@ -88,8 +88,8 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 
 PostBuild:
 	@echo Executing Post Build commands ...
-	C:\cseapp\CodeLite/tools/gcc-arm/bin/arm-none-eabi-objcopy -S -O srec  ./Debug/delay.elf ./Debug/delay.s19
-	C:\cseapp\CodeLite/tools/gcc-arm/bin/arm-none-eabi-objdump -D -S ./Debug/delay.elf > ./Debug/delay.dass
+	C:\cseapp\CodeLite/tools/gcc-arm/bin/arm-none-eabi-objcopy -S -O srec  ./Debug/asciidisplay.elf ./Debug/asciidisplay.s19
+	C:\cseapp\CodeLite/tools/gcc-arm/bin/arm-none-eabi-objdump -D -S ./Debug/asciidisplay.elf > ./Debug/asciidisplay.dass
 	@echo Done
 
 MakeIntermediateDirs:
@@ -105,8 +105,16 @@ PreBuild:
 ##
 ## Objects
 ##
+$(IntermediateDirectory)/header.c$(ObjectSuffix): header.c $(IntermediateDirectory)/header.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "C:/Users/Marcus/Documents/myWorkspace/asciidisplay/header.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/header.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/header.c$(DependSuffix): header.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/header.c$(ObjectSuffix) -MF$(IntermediateDirectory)/header.c$(DependSuffix) -MM header.c
+
+$(IntermediateDirectory)/header.c$(PreprocessSuffix): header.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/header.c$(PreprocessSuffix) header.c
+
 $(IntermediateDirectory)/startup.c$(ObjectSuffix): startup.c $(IntermediateDirectory)/startup.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "C:/Users/Marcus/Documents/myWorkspace/delay/startup.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/startup.c$(ObjectSuffix) $(IncludePath)
+	$(CC) $(SourceSwitch) "C:/Users/Marcus/Documents/myWorkspace/asciidisplay/startup.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/startup.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/startup.c$(DependSuffix): startup.c
 	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/startup.c$(ObjectSuffix) -MF$(IntermediateDirectory)/startup.c$(DependSuffix) -MM startup.c
 
